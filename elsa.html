@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Mas Alfin - Beranda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), 
+                              url('https://images.unsplash.com/photo-1542224566-6e85f2e6772f?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            color: #f0fdf4;
+        }
+
+        /* --- COVER OVERLAY (Pancingan Musik) --- */
+        #cover {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: transform 0.8s ease-in-out;
+            backdrop-filter: blur(8px);
+        }
+
+        /* --- CONTAINER UTAMA --- */
+        .container {
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 90%;
+            max-width: 500px;
+            z-index: 10;
+        }
+
+        section { display: none; }
+        .active { display: flex; flex-direction: column; animation: fadeIn 1s ease-out; }
+
+        h1 { font-size: 1.8rem; margin-bottom: 1rem; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        p { font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem; font-weight: 300; }
+        
+        button { 
+            padding: 12px 20px; border: none; border-radius: 50px; 
+            cursor: pointer; font-size: 14px; font-weight: 600;
+            text-transform: uppercase; transition: 0.3s;
+        }
+        .btn-open { background: #fff; color: #166534; margin-top: 20px; }
+        .btn-start { background: linear-gradient(135deg, #166534, #15803d); color: white; width: 100%; }
+        .btn-yes { background-color: #22c55e; color: white; flex: 1; }
+        .btn-no { background-color: #ef4444; color: white; flex: 1; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="cover">
+        <p>Dear Elsa 🌻</p>
+        <h1>You're Invited</h1>
+        <p>Ada pesan singkat dari Mas Alfin</p>
+        <button class="btn-open" onclick="bukaUndangan()">Buka Pesan</button>
+    </div>
+
+    <audio id="myAudio" loop>
+        <source src="Piche Kota - Bahagia Lagi (Official Music Video Lyric).mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <section id="page1" class="active">
+            <h1>Halo Elsa, semangat ya buat hari ini!🌸💖</h1>
+            <p>Mas punya pesan khusus untukmu hari ini.</p>
+            <button class="btn-start" onclick="nextPage('page2')">Diklik yaaa hehehe</button>
+        </section>
+
+        <section id="page2">
+            <h1>Dear Elsa🌻</h1>
+            <p>"Hai Elsa. Makasih ya sudah jadi orang yang hebat di hati Mas selama ini dan selalu menjadi orang yang selalu mas pikirkan. Maafin Mas kalau selama ini masih banyak kurangnya dan belum bisa jadi yang terbaik buat Elsa. 🙏
+
+Mas pengen kita lebih kuat lagi kedepannya🥺💞. <br><br> Apa Elsa masih mau lanjutin perjalanan ini dan kita bangun lagi semuanya bareng Mas?"</p>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-yes" onclick="goToWA()">Iya mauuu!</button>
+                <button class="btn-no" onclick="nextPage('page3')">Maaf ngga</button>
+            </div>
+        </section>
+
+        <section id="page3">
+            <h1>Terima Kasih🌻</h1>
+            <p>"Jujur, ini bukan jawaban yang Mas harapkan, tapi Mas nggak mau memaksakan kehendak. Mas ikhlas, Maafin Mas kalau selama ini belum bisa jadi sosok yang Elsa harapkan. Mas bersyukur pernah punya kesempatan buat sayang sama kamu. Terima kasih sudah menjadi bagian indah dalam hidup Mas selama ini. Jaga diri baik-baik ya, Elsa. Mas izin mundur. 🌤️ peluk jauh 💐"</p>
+        </section>
+    </div>
+
+    <script>
+        const audio = document.getElementById("myAudio");
+
+        function bukaUndangan() {
+            // Sembunyikan cover ke atas
+            document.getElementById("cover").style.transform = "translateY(-100%)";
+            
+            // Putar musik (Sudah pasti jalan karena ada klik)
+            audio.currentTime = 32; // Mulai detik 32
+            audio.volume = 0.5;
+            audio.play();
+
+            // Batasi durasi (Loop ke detik 32 jika lewat dari 2:01)
+            audio.addEventListener("timeupdate", function() {
+                if (audio.currentTime >= 121) {
+                    audio.currentTime = 32;
+                }
+            });
+        }
+
+        function nextPage(pageId) {
+            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function goToWA() {
+            window.location.href = "https://wa.me/6285810362433?text=Iyaaa%20mas%20Elsa%20mauuu.";
+        }
+    </script>
+</body>
+</html>
